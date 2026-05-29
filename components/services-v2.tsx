@@ -72,7 +72,7 @@ const PinwheelPart = ({ icon: Icon, title, angle, color }: { icon: any, title: s
 
 export function ServicesV2() {
   return (
-    <section id="services" className="py-16 md:py-24 bg-white overflow-hidden">
+    <section id="services" className="py-16 md:py-24 bg-background overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-20 md:space-y-32">
         
         {/* 1. Library Automation & Integrated Library Systems */}
@@ -329,6 +329,7 @@ export function ServicesV2() {
 
         {/* 7. About (Formerly Who We Are) */}
         <motion.div 
+          id="about"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
