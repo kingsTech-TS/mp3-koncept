@@ -3,13 +3,11 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, Sun, Moon } from 'lucide-react';
-import { useTheme } from 'next-themes';
+import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const { theme, setTheme } = useTheme();
 
   const navItems = [
     { label: 'Home', href: '/' },
@@ -51,16 +49,6 @@ export function Navbar() {
 
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-3">
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="text-foreground/70 hover:text-foreground"
-            >
-              <Sun size={18} className="rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon size={18} className="absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-              <span className="sr-only">Toggle theme</span>
-            </Button>
             <Link href="/contact">
               <Button variant="outline" size="sm" className="font-semibold">
                 Get in Touch
@@ -75,15 +63,6 @@ export function Navbar() {
 
           {/* Tablet & Mobile Menu Button */}
           <div className="flex items-center gap-2 lg:hidden">
-             <Button
-              variant="ghost"
-              size="icon-sm"
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="text-foreground/70 hover:text-foreground"
-            >
-              <Sun size={18} className="rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon size={18} className="absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-            </Button>
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="p-2 text-foreground hover:bg-muted rounded-lg transition-colors"

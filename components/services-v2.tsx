@@ -108,7 +108,7 @@ export function ServicesV2() {
                 desc: 'Comprehensive training programmes ensuring your team operates the system confidently.'
               }
             ].map((item, i) => (
-              <div key={i} className="p-6 md:p-10 bg-[#f3f0ff] rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border-none">
+              <div key={i} className="p-6 md:p-10 bg-primary/5 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-primary/5">
                 <h3 className="text-xl md:text-[22px] font-bold text-[#1a1b4b] mb-3 md:mb-4">{item.title}</h3>
                 <p className="text-sm md:text-base lg:text-[17px] text-foreground/70 leading-relaxed">{item.desc}</p>
               </div>
@@ -190,7 +190,7 @@ export function ServicesV2() {
               }
             ].map((item, i) => (
               <div key={i} className="flex flex-col gap-4 md:gap-6">
-                <item.icon className="w-8 h-8 md:w-10 md:h-10 text-primary/80" strokeWidth={1.2} />
+                <item.icon className="w-8 h-8 md:w-10 md:h-10 text-primary" strokeWidth={1.2} />
                 <div>
                   <h3 className="text-xl md:text-[22px] font-bold text-[#1a1b4b] mb-2 md:mb-3">{item.title}</h3>
                   <p className="text-sm md:text-base lg:text-[17px] text-foreground/70 leading-relaxed">{item.desc}</p>
@@ -216,7 +216,7 @@ export function ServicesV2() {
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-start">
-            <div className="aspect-[16/10] md:aspect-[1.5/1] bg-[#f3f0ff] rounded-2xl flex items-center justify-center border border-primary/10 overflow-hidden relative group order-2 lg:order-1">
+            <div className="aspect-[16/10] md:aspect-[1.5/1] bg-primary/5 rounded-2xl flex items-center justify-center border border-primary/10 overflow-hidden relative group order-2 lg:order-1">
                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent" />
                  <div className="text-primary/20 flex flex-col items-center gap-4">
                    <div className="w-12 md:w-16 h-1 bg-primary/10 rounded-full" />
@@ -275,7 +275,7 @@ export function ServicesV2() {
                 desc: 'End-to-end RFID tagging, hardware installation, and system integration for smart library operations.'
               }
             ].map((item, i) => (
-              <div key={i} className="p-6 md:p-10 bg-white border border-primary/10 border-l-[6px] border-l-primary/80 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
+              <div key={i} className="p-6 md:p-10 bg-card border border-primary/10 border-l-[6px] border-l-primary rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
                 <h3 className="text-xl md:text-[22px] font-bold text-[#1a1b4b] mb-4 md:mb-5">{item.title}</h3>
                 <p className="text-sm md:text-base lg:text-[17px] text-foreground/70 leading-relaxed">{item.desc}</p>
               </div>
@@ -316,7 +316,7 @@ export function ServicesV2() {
                 desc: 'Ongoing curation, licensing support, and usage analytics to maximise the value of your electronic resource investments.'
               }
             ].map((item, i) => (
-              <div key={i} className="p-6 md:p-10 bg-[#f3f0ff] rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border-none">
+              <div key={i} className="p-6 md:p-10 bg-primary/5 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-primary/5">
                 <div className="w-10 h-10 md:w-12 md:h-12 bg-primary rounded-full flex items-center justify-center mb-5 md:mb-6">
                   <item.icon className="w-5 h-5 md:w-6 md:h-6 text-white" strokeWidth={1.5} />
                 </div>
