@@ -5,6 +5,7 @@ import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import Link from 'next/link';
 import { 
   Calendar, 
   Clock, 
@@ -60,7 +61,7 @@ export default function RequestConsultationPage() {
               Thank you for reaching out. One of our senior consultants will contact you within 24 hours to schedule your session.
             </p>
             <Button size="lg" asChild>
-              <a href="/">Return Home</a>
+              <Link href="/">Return Home</Link>
             </Button>
           </div>
         </div>
@@ -73,7 +74,7 @@ export default function RequestConsultationPage() {
     <main className="min-h-screen bg-background">
       <Navbar />
       
-      <div className="relative py-20 overflow-hidden">
+      <div className="relative py-20 overflow-hidden mt-10">
         {/* Background blobs */}
         <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />

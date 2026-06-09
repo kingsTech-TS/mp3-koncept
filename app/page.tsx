@@ -17,7 +17,7 @@ export default function Page() {
       <SolutionsSection />
       <TestimonialsSection />
       <CTASection />
-      <Footer />
+      <Footer /> 
     </main>
   );
 }
