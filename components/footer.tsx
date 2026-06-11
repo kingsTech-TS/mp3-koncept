@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Mail, Phone, MapPin } from 'lucide-react';
+import Image from 'next/image';
 
 export function Footer() {
   return (
@@ -9,8 +10,16 @@ export function Footer() {
           {/* Brand */}
           <div className="space-y-6">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary to-accent shadow-lg shadow-primary/20" />
-              <span className="font-black text-2xl tracking-tighter text-[#1a1b4b]">MP3 KONCEPT</span>
+              <Link href="/" className="flex items-center gap-2 font-semibold text-lg shrink-0 group transition-transform hover:scale-[1.02] active:scale-[0.98]">
+            <Image 
+              src="/logo.png" 
+              alt="MP3 Koncept Logo" 
+              width={180} 
+              height={60} 
+              className="h-14 w-auto object-contain"
+              priority
+            />
+          </Link>
             </div>
             <p className="text-base text-foreground/50 leading-relaxed font-medium">
               Driving the knowledge economy through world-class information systems and enterprise software solutions.

@@ -6,14 +6,51 @@ import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Mail, Phone, MapPin, CheckCircle2 } from 'lucide-react';
+import { Mail, Phone, MapPin, CheckCircle2, Loader2 } from 'lucide-react';
 
 export default function ContactPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    message: ''
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setIsSubmitted(true);
+      } else {
+        setError(result.message || 'Something went wrong, please try again.');
+      }
+    } catch (err) {
+      console.error('Error submitting form:', err);
+      setError('Failed to send message, please try again later.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (isSubmitted) {
@@ -95,25 +132,71 @@ export default function ContactPage() {
 
             <Card className="p-8 md:p-10 shadow-2xl border-primary/10 bg-card">
               <form onSubmit={handleSubmit} className="space-y-6">
+                {error && (
+                  <div className="p-4 rounded-lg bg-red-50 border border-red-200 text-red-800">
+                    {error}
+                  </div>
+                )}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-foreground/80">First Name</label>
-                    <input required type="text" placeholder="John" className="w-full h-12 px-4 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" />
+                    <input 
+                      required 
+                      type="text" 
+                      name="firstName"
+                      value={formData.firstName}
+                      onChange={handleInputChange}
+                      placeholder="John" 
+                      className="w-full h-12 px-4 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" 
+                    />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-foreground/80">Last Name</label>
-                    <input required type="text" placeholder="Doe" className="w-full h-12 px-4 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" />
+                    <input 
+                      required 
+                      type="text" 
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleInputChange}
+                      placeholder="Doe" 
+                      className="w-full h-12 px-4 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" 
+                    />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-foreground/80">Email Address</label>
-                  <input required type="email" placeholder="john@example.com" className="w-full h-12 px-4 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" />
+                  <input 
+                    required 
+                    type="email" 
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="john@example.com" 
+                    className="w-full h-12 px-4 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" 
+                  />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-foreground/80">Message</label>
-                  <textarea required rows={4} placeholder="How can we help you?" className="w-full p-4 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" />
+                  <textarea 
+                    required 
+                    rows={4} 
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    placeholder="How can we help you?" 
+                    className="w-full p-4 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" 
+                  />
                 </div>
-                <Button type="submit" className="w-full h-12 text-lg font-bold">Send Message</Button>
+                <Button type="submit" disabled={isLoading} className="w-full h-12 text-lg font-bold">
+                  {isLoading ? (
+                    <>
+                      <Loader2 size={20} className="animate-spin mr-2" />
+                      Sending...
+                    </>
+                  ) : (
+                    'Send Message'
+                  )}
+                </Button>
               </form>
             </Card>
 

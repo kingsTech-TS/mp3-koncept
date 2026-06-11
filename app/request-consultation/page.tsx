@@ -41,10 +41,49 @@ const itemVariants = {
 
 export default function RequestConsultationPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    company: '',
+    service: 'Library Automation & ILS',
+    details: ''
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch('/api/consultation', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setIsSubmitted(true);
+      } else {
+        setError(result.message || 'Something went wrong, please try again.');
+      }
+    } catch (err) {
+      console.error('Error submitting form:', err);
+      setError('Failed to send consultation request, please try again later.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (isSubmitted) {
@@ -140,6 +179,11 @@ export default function RequestConsultationPage() {
             >
               <Card className="p-8 md:p-10 shadow-2xl border-primary/10">
                 <form onSubmit={handleSubmit} className="space-y-6">
+                  {error && (
+                    <div className="p-4 rounded-lg bg-red-50 border border-red-200 text-red-800">
+                      {error}
+                    </div>
+                  )}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label className="text-sm font-semibold text-foreground/80 flex items-center gap-2">
@@ -149,6 +193,9 @@ export default function RequestConsultationPage() {
                       <input 
                         required
                         type="text" 
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
                         placeholder="John Doe"
                         className="w-full h-12 px-4 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                       />
@@ -161,7 +208,38 @@ export default function RequestConsultationPage() {
                       <input 
                         required
                         type="email" 
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
                         placeholder="john@institution.edu"
+                        className="w-full h-12 px-4 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-sm font-semibold text-foreground/80">Phone Number</label>
+                      <input 
+                        type="tel" 
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        placeholder="+234 812 345 6789"
+                        className="w-full h-12 px-4 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-semibold text-foreground/80 flex items-center gap-2">
+                        <Building2 size={14} className="text-primary" />
+                        Institution Name
+                      </label>
+                      <input 
+                        type="text" 
+                        name="company"
+                        value={formData.company}
+                        onChange={handleInputChange}
+                        placeholder="University of Technology"
                         className="w-full h-12 px-4 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                       />
                     </div>
@@ -169,23 +247,15 @@ export default function RequestConsultationPage() {
 
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-foreground/80 flex items-center gap-2">
-                      <Building2 size={14} className="text-primary" />
-                      Institution Name
-                    </label>
-                    <input 
-                      required
-                      type="text" 
-                      placeholder="University of Technology"
-                      className="w-full h-12 px-4 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold text-foreground/80 flex items-center gap-2">
                       <MessageSquare size={14} className="text-primary" />
                       Primary Area of Interest
                     </label>
-                    <select className="w-full h-12 px-4 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all appearance-none">
+                    <select 
+                      name="service"
+                      value={formData.service}
+                      onChange={handleInputChange}
+                      className="w-full h-12 px-4 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all appearance-none"
+                    >
                       <option>Library Automation & ILS</option>
                       <option>Digitisation & Paperless Office</option>
                       <option>Electronic Records Management</option>
@@ -198,15 +268,31 @@ export default function RequestConsultationPage() {
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-foreground/80">How can we help you?</label>
                     <textarea 
+                      required
                       rows={4}
+                      name="details"
+                      value={formData.details}
+                      onChange={handleInputChange}
                       placeholder="Tell us about your project requirements..."
                       className="w-full p-4 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all resize-none"
                     />
                   </div>
 
-                  <Button type="submit" className="w-full h-14 text-lg font-bold group">
-                    Request Strategy Session
-                    <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                  <Button type="submit" disabled={isLoading} className="w-full h-14 text-lg font-bold group">
+                    {isLoading ? (
+                      <>
+                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        Request Strategy Session
+                        <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                      </>
+                    )}
                   </Button>
 
                   <p className="text-[12px] text-center text-foreground/50">
